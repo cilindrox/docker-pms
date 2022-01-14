@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  plex:
+    container_name: plex
+    image: plexinc/pms-docker:1.25.8.5663-e071c3d62
+    restart: unless-stopped
+    stop_grace_period: 3m
+    runtime: nvidia
+    ports:
+      # ref: https://support.plex.tv/articles/201543147-what-network-ports-do-i-need-to-allow-through-my-firewall/
+      - 32400:32400/tcp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    environment:
+      # TZ: CHANGEME
+      ADVERTISE_IP: http://192.168.0.1:32400
+      PUID: 1000
+      PGID: 1000
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
+    hostname: pms.home.local
+    volumes:
+      - ./config:/config
+      - /tmp:/transcode
+      - <path/to/media>:/data
+    networks:
+      - plexpms
+
+networks:
+  plexpms:
+    driver: bridge
