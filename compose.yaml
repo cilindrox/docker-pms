@@ -5,11 +5,11 @@ services:
     restart: unless-stopped
     stop_grace_period: 3m
     environment:
-      # TZ: CHANGEME
-      ADVERTISE_IP: http://192.168.0.1:32400
-      PUID: 1000
+      ADVERTISE_IP: ${ADVERTISE_IP}
       PGID: 1000
       PLEX_CLAIM: ${PLEX_CLAIM}
+      PUID: 1000
+      TZ: ${TZ}
     hostname: pms.home.local
     volumes:
       - ./config:/config
